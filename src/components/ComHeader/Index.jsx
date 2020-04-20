@@ -6,7 +6,7 @@ import { history } from 'umi'
 
 export default class Header extends React.Component{
     onGoLogin = () => {
-        history.push('/login')
+        history.push('/user/login')
     }
     render () {
         const menu = (

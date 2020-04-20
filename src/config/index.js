@@ -1,0 +1,1 @@
+export const baseUrl = '/pf/v1'

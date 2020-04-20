@@ -4,20 +4,22 @@ import BasicLayout from './basicLayout'
 import SimpleLayout from './simpleLayout'
 
 function Layout(props) {
-  console.log('props', props)
-  if (props.location.pathname === '/login') {
-    return <ErrorBoundary>
-      <SimpleLayout>
-        { props.children }
-      </SimpleLayout>
-    </ErrorBoundary>
+  if (props.location.pathname === '/user/login') {
+    return (
+      <Fragment>
+        <ErrorBoundary>
+          <SimpleLayout>
+            {props.children}
+          </SimpleLayout>
+        </ErrorBoundary>
+      </Fragment>
+    )
   }
-
   return (
     <Fragment>
       <ErrorBoundary>
         <BasicLayout>
-          { props.children }
+          {props.children}
         </ BasicLayout>
       </ErrorBoundary>
     </Fragment>
