@@ -1,63 +1,99 @@
 import React from 'react'
-import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Checkbox, Spin } from 'antd';
+import { connect } from 'dva'
+import moment from 'moment'
+import { UserOutlined, LockOutlined, LoadingOutlined } from '@ant-design/icons';
+import styles from './Index.less'
 
+@connect(({user})=>({
+  user
+}))
 export default class NormalLoginForm extends React.Component {
+  componentDidMount = () => {
+    this.props.dispatch({
+      type:'user/getCodeSrc'
+    })
+  }
+  handleRefresh = () => {
+    this.props.dispatch({
+      type:'user/save',
+      payloas: {
+        codeSrc: `/pf/v1/getCode?t=${Date.now()}`
+      }
+    })
+	}
   render () {
+    const { user:{ codeSrc }} = this.props
+    console.log('codeSrc', codeSrc)
     const onFinish = values => {
       console.log('Received values of form: ', values);
     };
     return (
-      <div>
+      <div className={styles.loginBox}>
         <Form
           name="normal_login"
-          className="login-form"
+          className={styles.loginForm}
           initialValues={{
             remember: true,
           }}
           onFinish={onFinish}
         >
+          <h2 className={styles.formTitle}>账号登录</h2>
           <Form.Item
             name="username"
             rules={[
               {
                 required: true,
-                message: 'Please input your Username!',
+                message: '请输入你的账号!',
               },
             ]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+            <Input size="large" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账号" />
           </Form.Item>
           <Form.Item
             name="password"
             rules={[
               {
                 required: true,
-                message: 'Please input your Password!',
+                message: '请输入你的密码!',
               },
             ]}
           >
             <Input
+              size="large"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder="密码"
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-    
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
+          <Form.Item
+            name="code"
+            rules={[
+              {
+                required: true,
+                message: '请输入验证码!',
+              },
+            ]}
+          >
+            <Input
+              size="large"
+              addonAfter={
+								<div>
+									{
+										codeSrc ?
+											<img alt="验证码" style={{width: 80, height: 38, cursor: 'pointer'}} src={codeSrc} onClick={this.handleRefresh} /> :
+											<span><LoadingOutlined/></span>
+									}
+								</div>
+							}
+              placeholder="验证码"
+            />
           </Form.Item>
     
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              Log in
+            <Button type="primary" size="large" htmlType="submit" className={styles.formButton}>
+              登录
             </Button>
-            Or <a href="">register now!</a>
           </Form.Item>
         </Form>
       </div>

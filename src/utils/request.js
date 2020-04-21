@@ -59,7 +59,7 @@ const request = extend({
 request.interceptors.request.use((url, options) => {
   return (
     {
-      url: isDev ? url : `${baseUrl}${url}`,
+      url: isDev ? `${baseUrl}${url}` : `${baseUrl}${url}`,
       options: {
         ...options
       },

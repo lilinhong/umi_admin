@@ -1,12 +1,13 @@
 import request from '@/utils/request';
+import moment from 'moment'
 
-export async function fakeAccountLogin(params) {
-    return request('/api/login/account', {
+export async function queryCodeSrcpost(params) {
+    return request('/getCode', {
       method: 'POST',
       data: params,
     });
 }
 
-export async function getFakeCaptcha(mobile) {
-    return request(`/api/login/captcha?mobile=${mobile}`);
+export async function queryCodeSrc() {
+    return request(`/getCode?t=${moment().valueOf()}`);
 }

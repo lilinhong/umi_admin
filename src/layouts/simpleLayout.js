@@ -7,7 +7,7 @@ export default class SimpleLayout extends React.Component {
     render () {
         return (
             <Layout>
-                <Content style={{background:'lihgtgray',height:'100px'}}>
+                <Content>
                     {this.props.children}
                 </Content>
             </Layout>
